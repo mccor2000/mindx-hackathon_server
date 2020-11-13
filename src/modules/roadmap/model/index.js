@@ -1,41 +1,30 @@
 import { model, Schema } from 'mongoose'
 
-const Leave = new Schema({
+const NodeSchema = new Schema({
   title: {
     type: String,
     required: true,
+  },
+
+  overview: {
+    type: String,
   },
 
   references: [
     {
-      type: String,
-      default: [],
+      description: String,
+      url: String,
     },
   ],
-})
 
-const Node = new Schema({
-  title: {
-    type: String,
-    required: true,
+  parent: {
+    type: Schema.Types.ObjectId,
+    ref: 'nodes',
+    default: null,
   },
-
-  childrens: [
-    {
-      type: Node,
-      default: [],
-    },
-  ],
-
-  leaves: [
-    {
-      type: Leave,
-      default: [],
-    },
-  ],
 })
 
-const Roadmap = new Schema(
+const RoadmapSchema = new Schema(
   {
     field: {
       type: String,
@@ -69,12 +58,31 @@ const Roadmap = new Schema(
 
     content: [
       {
-        type: Node,
-        default: [],
+        type: Schema.Types.ObjectId,
+        ref: 'nodes',
+      },
+    ],
+
+    contributes: [
+      {
+        userId: { type: Schema.Types.ObjectId, ref: 'users' },
+        changes: [
+          {
+            add: [{ type: Schema.Types.ObjectId, ref: 'nodes' }],
+            update: [
+              {
+                currentNodeId: Schema.Types.ObjectId,
+                updatedNodeId: Schema.Types.ObjectId,
+              },
+            ],
+            remove: [{ type: Schema.Types.ObjectId, ref: 'nodes' }],
+          },
+        ],
       },
     ],
   },
   { timestamps: true }
 )
 
-export default model('Roadmap', Roadmap, 'roadmaps')
+export const Node = model('Node', NodeSchema, 'nodes')
+export const Roadmap = model('Roadmap', RoadmapSchema, 'roadmaps')
