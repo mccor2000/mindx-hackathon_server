@@ -21,7 +21,7 @@ export default {
     },
   },
   swagger: {
-    apis: ['docs/api/v1/common.yml', 'docs/api/v1/**/*.yml'],
+    apis: ['docs/api/common.yml', 'docs/api/**/*.yml'],
     swaggerDefinition: {
       openapi: '3.0.0',
       components: {},
