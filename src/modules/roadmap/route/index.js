@@ -1,32 +1,37 @@
 import { Router } from 'express'
 
 import controller from '../controller'
-import { authenticate, authorize, validate } from '../../../middlewares'
+import { authenticate, authorize } from '../../../middlewares'
 
-const router = Router()
+export const roadmapRouter = Router()
+export const nodeRouter = Router()
 
-router.use(authenticate('jwt'))
+roadmapRouter.use(authenticate('jwt'))
+nodeRouter.use(authenticate('jwt'))
 
-router
+roadmapRouter
   .route('/')
-  .get(authorize([]), () => {})
-  .post(authorize([]), validate(), () => {})
+  .get(authorize(), controller.getManyRoadmaps)
+  .post(authorize(), controller.createRoadmap)
 
-router
+roadmapRouter
   .route('/:roadmapId')
-  .get(authorize([]), () => {})
-  .put(authorize([]), validate(), () => {})
-  .delete(authorize([]), () => {})
+  .get(authorize(), controller.getRoadmapById)
+  .put(authorize(), controller.updateRoadmapById)
+  .delete(authorize(), controller.deleteRoadmapById)
 
-router
+roadmapRouter
   .route('/:roadmapId/nodes')
-  .get(authorize([]), () => {})
-  .post(authorize([]), validate(), () => {})
+  .get(authorize(), controller.getAllNodesFromRoadmap)
+  .post(authorize(), controller.addNodeToRoadMap)
 
-router
-  .route('/:roadmapId/nodes/:nodeId')
-  .get(authorize([]), () => {})
-  .put(authorize([]), validate(), () => {})
-  .delete(authorize([]), () => {})
+roadmapRouter
+  .route('/:roadmapRouter/nodes/:nodeId')
+  .delete(authorize(), controller.removeNodeFromRoadmap)
 
-export default router
+nodeRouter.route('/').post(authorize(), controller.createNode)
+
+nodeRouter
+  .route('/:nodeId')
+  .get(authorize(), controller.getNodeById)
+  .put(authorize(), controller.updateNodeById)

@@ -34,7 +34,7 @@ const deleteRoadmapById = async (req, res) => {
   res.status(204).end()
 }
 
-const getManyNodesFromRoadmap = async (req, res) => {
+const getAllNodesFromRoadmap = async (req, res) => {
   const nodesBelongToRoadmap = await service.getManyNodes({
     roadmapId: req.params.roadmapId,
   })
@@ -43,12 +43,15 @@ const getManyNodesFromRoadmap = async (req, res) => {
 }
 
 const addNodeToRoadMap = async (req, res) => {
-  const addedNode = await service.addNodeToRoadMap(
-    req.params.roadmapId,
-    req.body
-  )
+  await service.addNodeToRoadMap(req.params.roadmapId, req.body)
 
-  res.status(200).json({ data: addedNode })
+  res.status(201).end()
+}
+
+const createNode = async (req, res) => {
+  const newNode = await service.createNode(req.body)
+
+  res.status(201).json({ data: newNode })
 }
 
 const getNodeById = async (req, res) => {
@@ -75,9 +78,11 @@ export default {
   updateRoadmapById: wrap(updateRoadmapById),
   deleteRoadmapById: wrap(deleteRoadmapById),
 
-  getManyNodesFromRoadmap: wrap(getManyNodesFromRoadmap),
+  getAllNodesFromRoadmap: wrap(getAllNodesFromRoadmap),
   addNodeToRoadMap: wrap(addNodeToRoadMap),
+  removeNodeFromRoadmap: wrap(removeNodeFromRoadmap),
+
+  createNode: wrap(createNode),
   getNodeById: wrap(getNodeById),
   updateNodeById: wrap(updateNodeById),
-  removeNodeFromRoadmap: wrap(removeNodeFromRoadmap),
 }

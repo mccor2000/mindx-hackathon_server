@@ -35,6 +35,14 @@ const getRoadmapById = async (roadmapId) => {
   return existingRoadmap
 }
 
+const getAllNodesInRoadmapById = async (roadmapId) => {
+  const { content, links } = await getRoadmapById(roadmapId)
+  const getAllNodes = content.map((nodeId) => Node.findById(nodeId))
+
+  const nodes = await Promise.all(getAllNodes)
+  return { nodes, links }
+}
+
 const updateRoadmapById = async (roadmapId, updateData) => {
   const existingRoadmap = await Roadmap.findByIdAndUpdate(roadmapId, updateData)
     .select('_id')
@@ -59,28 +67,20 @@ const removeRoadmapById = async (roadmapId) => {
   return removedRoadmap
 }
 
-const addNodeToRoadMap = async (roadmapId, nodeData) => {
+const addNodeToRoadMap = async (roadmapId, { nodeId, link }) => {
   const roadmap = await getRoadmapById(roadmapId)
-  if (roadmap.content.includes(nodeData.title))
-    throw new AppError(
-      ErrorType.BAD_REQUEST,
-      `Node ${nodeData.title} is already exist in the roadmap`
-    )
-  const newNode = await createNode(nodeData)
-  await Roadmap.findByIdAndUpdate(roadmapId, {
-    $push: { content: newNode._id },
-  })
+  if (!roadmap.content.every((id) => id != nodeId))
+    throw new AppError(ErrorType.BAD_REQUEST, `Node already exists in roadmap`)
 
-  return newNode
+  await Roadmap.findByIdAndUpdate(roadmapId, {
+    $push: { content: nodeId, links: link },
+  })
 }
 
 const removeNodeFromRoadmap = async (roadmapId, nodeId) => {
   const roadmap = await getRoadmapById(roadmapId)
-  if (!roadmap.content.includes(nodeId))
-    throw new AppError(
-      ErrorType.BAD_REQUEST,
-      `Node does not exist in the roadmap`
-    )
+  if (roadmap.content.every((id) => id != nodeId))
+    throw new AppError(ErrorType.BAD_REQUEST, `Node does not exist in roadmap`)
 
   const removedNode = await deleteNodeById(nodeId)
   await Roadmap.findByIdAndUpdate(roadmapId, {
@@ -139,6 +139,7 @@ export default {
   updateRoadmapById,
   removeRoadmapById,
 
+  getAllNodesInRoadmapById,
   addNodeToRoadMap,
   removeNodeFromRoadmap,
 
