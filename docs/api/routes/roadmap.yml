@@ -1,0 +1,263 @@
+paths:
+  /roadmaps:
+    get:
+      summary: Return many roadmaps based on filter
+      tags: [Roadmap]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RoadmapSchema'
+
+    post:
+      summary: Create a roadmap (CONTRIBUTOR)
+      tags: [Roadmap]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoadmapRequestBody'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CreateRoadmapResponse'
+
+  /roadmaps/{roadmapId}:
+    get:
+      summary: Return a roadmap by ID
+      tags: [Roadmap]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: roadmapId
+          schema:
+            type: string
+          required: true
+          description: ID of the roadmap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RoadmapSchema'
+
+    put:
+      summary: Update a roadmap by ID (OWNER)
+      tags: [Roadmap]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: roadmapId
+          schema:
+            type: string
+          required: true
+          description: ID of the roadmap
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoadmapRequestBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UpdateRoadmapResponse'
+
+    delete:
+      summary: Delete a roadmap by ID (OWNER)
+      tags: [Roadmap]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: roadmapId
+          schema:
+            type: string
+          required: true
+          description: ID of the roadmap
+      responses:
+        '204':
+          description: No-Content
+
+  /roadmaps/{roadmapId}/nodes:
+    get:
+      summary: Return all nodes of roadmap by ID
+      tags: [Roadmap]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: roadmapId
+          schema:
+            type: string
+          required: true
+          description: ID of the roadmap that contains nodes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NodeSchema'
+
+    post:
+      summary: Add a node to roadmap (OWNER)
+      tags: [Roadmap]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: roadmapId
+          schema:
+            type: string
+          required: true
+          description: ID of the roadmap that contains nodes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddNodeToRoadmapRequestBody'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AddNodeToRoadmapResponse'
+  /roadmaps/{roadmapId}/nodes/{nodeId}:
+    delete:
+      summary: Delete a node in roadmap by ID (OWNER)
+      tags: [Roadmap]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: roadmapId
+          schema:
+            type: string
+          required: true
+          description: ID of the roadmap that contains nodes
+        - in: path
+          name: nodeId
+          schema:
+            type: string
+          required: true
+          description: ID of the node
+      responses:
+        '204':
+          description: No-Content
+  /nodes:
+    post:
+      summary: Create a node
+      tags: [Node]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNodeRequestBody'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CreateNodeResponse'
+
+
+  /nodes/{nodeId}:
+    get:
+      summary: Return a node by ID
+      tags: [Node]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: nodeId
+          schema:
+            type: string
+          required: true
+          description: ID of the node
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NodeSchema'
+
+    put:
+      summary: Update a node by ID (OWNER)
+      tags: [Node]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: nodeId
+          schema:
+            type: string
+          required: true
+          description: ID of the node
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNodeRequestBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UpdateNodeResponse'
