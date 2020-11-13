@@ -1,0 +1,124 @@
+paths:
+  /user/profile:
+    get:
+      summary: Return user's profile 
+      tags: [User]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserProfileSchema'
+
+    put:
+      summary: Update profile 
+      tags: [User]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileRequestBody'
+      responses:
+        '204':
+          description: No-Content
+  
+  /user/course:
+    get:
+      summary: Return user's registered courses
+      tags: [User]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserRegisteredCourseSchema'
+
+    post:
+      summary: Register a course 
+      tags: [User]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterCourseRequestBody'
+      responses:
+        '201':
+          description: OK
+
+  /user/course/${courseId}:
+    get:
+      summary: Return registered course progress
+      tags: [User]
+      security:
+         - bearerAuth: []
+      parameters:
+        - in: path
+          name: courseId
+          schema:
+            type: string
+          required: true
+          description: ID of the registered course 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegisteredCourseSchema'
+    put:
+      summary: Mark lesson as read 
+      tags: [User]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: courseId
+          schema:
+            type: string
+          required: true
+          description: ID of the registered course 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarkLessonAsFinishedRequestBody'
+      responses:
+        '204':
+          description: No-Content
+  
+  /user/change-password:
+    post:
+      summary: Change user's password
+      tags: [User]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequestBody'
+      responses:
+        '204':
+          description: No-Content
