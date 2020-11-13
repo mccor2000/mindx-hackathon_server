@@ -22,6 +22,46 @@ const NodeSchema = new Schema({
     ref: 'nodes',
     default: null,
   },
+
+  children: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'nodes',
+    },
+  ],
+
+  position: {
+    x: Number,
+    y: Number,
+  },
+})
+
+NodeSchema.pre('init', async function (next) {
+  try {
+    if (!this.parent || !this.isModified('parent')) return next()
+
+    await Node.findOneAndUpdate(this.parent, { $push: { children: this._id } })
+      .lean()
+      .exec()
+
+    next()
+  } catch (err) {
+    next(err)
+  }
+})
+
+NodeSchema.pre('remove', async function (next) {
+  try {
+    const newParent = this.parent
+    const updateParent = this.children.map((child) =>
+      Node.findByIdAndUpdate(child, { parent: newParent })
+    )
+
+    await Promise.all(updateParent)
+    next()
+  } catch (err) {
+    next(err)
+  }
 })
 
 const RoadmapSchema = new Schema(
@@ -57,6 +97,14 @@ const RoadmapSchema = new Schema(
       },
     ],
 
+    links: [
+      {
+        source: String,
+        target: String,
+        type: String,
+      },
+    ],
+
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'users',
@@ -81,7 +129,7 @@ const RoadmapSchema = new Schema(
                 updatedNodeId: Schema.Types.ObjectId,
               },
             ],
-            remove: [{ type: Schema.Types.ObjectId, ref: 'nodes' }],
+            delete: [{ type: Schema.Types.ObjectId, ref: 'nodes' }],
           },
         ],
         isOpen: {
