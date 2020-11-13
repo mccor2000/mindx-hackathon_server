@@ -37,8 +37,8 @@ const signin = async ({ email, password }) => {
 const createTokens = async (payload) => {
   const accessToken = await signAsync(
     payload,
-    config.jwt.accessToken.secret,
-    config.jwt.accessToken.options
+    config.jwt.secret,
+    config.jwt.options
   )
 
   return { accessToken }
