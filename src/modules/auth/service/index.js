@@ -15,11 +15,11 @@ const createUser = async ({ firstName, lastName, email, password }) => {
 
   const newUser = await User.create({
     email,
-    credentials: { password },
+    password,
     profile: { firstName, lastName },
   })
 
-  return _.pick(newUser, ['_id', 'role', 'verified'])
+  return _.pick(newUser, ['_id', 'role'])
 }
 
 const signin = async ({ email, password }) => {
@@ -31,7 +31,7 @@ const signin = async ({ email, password }) => {
   if (!isValidPassword)
     throw new AppError(ErrorType.BAD_REQUEST, 'Invalid email or password')
 
-  return _.pick(existingUser, ['_id', 'role', 'verified'])
+  return _.pick(existingUser, ['_id', 'role'])
 }
 
 const createTokens = async (payload) => {

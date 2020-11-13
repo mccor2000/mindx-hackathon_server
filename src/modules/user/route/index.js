@@ -1,12 +1,7 @@
 import { Router } from 'express'
 
 import controller from '../controller'
-import {
-  UpdateProfileRequestBody,
-  ChangePasswordRequestBody,
-  MarkAsReadRequestBody,
-  RegisterCourseRequestBody,
-} from '../schema'
+import { UpdateProfileRequestBody, ChangePasswordRequestBody } from '../schema'
 import { authorize, authenticate, validate } from '../../../middlewares'
 import { Roles } from '../../user/model'
 
@@ -21,24 +16,6 @@ router
     authorize([...Object.values(Roles)]),
     validate(UpdateProfileRequestBody, 'body'),
     controller.updateProfile
-  )
-
-router
-  .route('/course')
-  .get(authorize([Roles.User]), controller.getAllRegisteredCourses)
-  .post(
-    authorize([Roles.User]),
-    validate(RegisterCourseRequestBody, 'body'),
-    controller.registerCourse
-  )
-
-router
-  .route('/course/:courseId')
-  .get(authorize([Roles.User]), controller.getRegisteredCourse)
-  .put(
-    authorize([Roles.User]),
-    validate(MarkAsReadRequestBody, 'body'),
-    controller.markAsRead
   )
 
 router

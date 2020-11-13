@@ -1,39 +1,14 @@
 import { model, Schema } from 'mongoose'
 import { hash, compare } from 'bcrypt'
 
-const Genders = Object.freeze({
-  Male: 'male',
-  Female: 'female',
-  Other: 'other',
-})
-
 export const Roles = Object.freeze({
-  User: 'user',
-  Staff: 'staff',
-  Admin: 'admin',
+  Learner: 'learner',
+  Contributor: 'contributor',
 })
 
 const UserProfile = new Schema({
   firstName: String,
   lastName: String,
-  gender: { type: String, enum: Object.values(Genders) },
-  studentID: String,
-  school: String,
-  picture: String,
-})
-
-const UserCredential = new Schema({
-  password: String,
-  githubId: String,
-  googleId: String,
-})
-
-const RegisteredCourse = new Schema({
-  courseId: Schema.Types.ObjectId,
-
-  finishedLessons: [Schema.Types.ObjectId],
-
-  fullfill: Number,
 })
 
 const User = new Schema(
@@ -44,30 +19,19 @@ const User = new Schema(
       unique: true,
     },
 
-    profile: {
-      type: UserProfile,
+    password: {
+      type: String,
+      required: true,
     },
 
-    credentials: {
-      type: UserCredential,
-      required: true,
+    profile: {
+      type: UserProfile,
     },
 
     role: {
       type: String,
       enum: Object.values(Roles),
-      default: Roles.User,
-    },
-
-    courses: [
-      {
-        type: RegisteredCourse,
-      },
-    ],
-
-    verified: {
-      type: Boolean,
-      default: false,
+      default: Roles.Learner,
     },
 
     status: {
@@ -78,7 +42,7 @@ const User = new Schema(
   { timestamps: true }
 )
 
-UserCredential.pre('save', async function (next) {
+User.pre('save', async function (next) {
   try {
     if (!this.isModified('password') || !this.password) return next()
 
@@ -91,7 +55,7 @@ UserCredential.pre('save', async function (next) {
 })
 
 User.methods.comparePassword = async function (password) {
-  return compare(password, this.credentials.password)
+  return compare(password, this.password)
 }
 
 export default model('User', User, 'users')
