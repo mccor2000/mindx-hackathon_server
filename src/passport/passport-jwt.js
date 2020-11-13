@@ -6,7 +6,7 @@ import AppConfig from '../app.config'
 module.exports = (passport) => {
   const verify = async (jwtPayload, done) => {
     try {
-      const user = await User.findById(jwtPayload._id).lean().exec()
+      const user = await User.findById(jwtPayload._id).exec()
       if (!user) return done(null, false)
 
       return done(null, user)
