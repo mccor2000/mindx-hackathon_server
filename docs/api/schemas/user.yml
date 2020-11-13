@@ -1,0 +1,77 @@
+components:
+  schemas:
+    UserProfileSchema:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        gender:
+          type: string
+          enum: [male, female, other]
+        studentID:
+          type: string
+        school:
+          type: string
+        gravatar:
+          type: string
+
+    UserRegisteredCourseSchema:
+      type: object
+      properties:
+        courseId:
+          type: string
+        finishedLessons:
+          type: array
+          items:
+            type: string
+        fullfill:
+          type: number
+    
+    ProfileRequestBody:
+      type: object
+      required:
+        - firstName
+        - lastName
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        gender:
+          type: string
+          enum: [male, female, other]
+        studentID:
+          type: string
+        school:
+          type: string
+        gravatar:
+          type: string
+    
+    RegisterCourseRequestBody:
+      type: object
+      required:
+        - courseId
+      properties:
+        courseId:
+          type: string
+
+    MarkLessonAsFinishedRequestBody:
+      type: object
+      require:
+        - lessonId
+      properties:
+        lessonId:
+          type: string
+
+    ChangePasswordRequestBody:
+      type: object
+      required:
+        - password
+        - newPassword
+      properties:
+        password:
+          type: string
+        newPassword:
+          type: string

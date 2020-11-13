@@ -1,0 +1,32 @@
+openapi: 3.0.0
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - descriptions
+      properties:
+        code:
+          type: number
+        descriptions:
+          type: array
+          items:
+            type: string
+  responses:
+    BadRequest:
+      description: Bad request
+    Unauthorized:
+      description: Unauthorized
+    NotFound:
+      description: Not found
+    Internal:
+      description: Internal error
+
