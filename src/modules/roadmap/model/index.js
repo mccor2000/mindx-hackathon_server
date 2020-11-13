@@ -31,16 +31,10 @@ const RoadmapSchema = new Schema(
       required: true,
     },
 
-    title: {
+    name: {
       type: String,
       required: true,
     },
-
-    author: [
-      {
-        type: String,
-      },
-    ],
 
     rating: [
       {
@@ -63,6 +57,18 @@ const RoadmapSchema = new Schema(
       },
     ],
 
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'users',
+    },
+
+    contributors: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+      },
+    ],
+
     contributes: [
       {
         userId: { type: Schema.Types.ObjectId, ref: 'users' },
@@ -78,6 +84,10 @@ const RoadmapSchema = new Schema(
             remove: [{ type: Schema.Types.ObjectId, ref: 'nodes' }],
           },
         ],
+        isOpen: {
+          type: Boolean,
+          default: true,
+        },
       },
     ],
   },
