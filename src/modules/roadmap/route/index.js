@@ -1,9 +1,37 @@
 import { Router } from 'express'
 
-import { authenticate } from '../../../middlewares'
+import controller from '../controller'
+import { authenticate, authorize } from '../../../middlewares'
 
-const router = Router()
+export const roadmapRouter = Router()
+export const nodeRouter = Router()
 
-router.use(authenticate('jwt'))
+roadmapRouter.use(authenticate('jwt'))
+nodeRouter.use(authenticate('jwt'))
 
-export default router
+roadmapRouter
+  .route('/')
+  .get(authorize(), controller.getManyRoadmaps)
+  .post(authorize(), controller.createRoadmap)
+
+roadmapRouter
+  .route('/:roadmapId')
+  .get(authorize(), controller.getRoadmapById)
+  .put(authorize(), controller.updateRoadmapById)
+  .delete(authorize(), controller.deleteRoadmapById)
+
+roadmapRouter
+  .route('/:roadmapId/nodes')
+  .get(authorize(), controller.getAllNodesFromRoadmap)
+  .post(authorize(), controller.addNodeToRoadMap)
+
+roadmapRouter
+  .route('/:roadmapRouter/nodes/:nodeId')
+  .delete(authorize(), controller.removeNodeFromRoadmap)
+
+nodeRouter.route('/').post(authorize(), controller.createNode)
+
+nodeRouter
+  .route('/:nodeId')
+  .get(authorize(), controller.getNodeById)
+  .put(authorize(), controller.updateNodeById)

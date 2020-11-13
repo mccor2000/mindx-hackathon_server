@@ -1,0 +1,185 @@
+components: 
+  schemas:
+    RoadmapSchema: 
+      type: object
+      properties:
+        _id:
+          type: string
+        name: 
+          type: string
+        rating: 
+          type: string
+        content:
+          type: array
+          items:
+            type: string
+        owner:
+          type: string
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              type: string
+              source: string
+              target: string
+
+    CreateRoadmapRequestBody:
+      type: object
+      required:
+        - field
+        - name
+      properties:
+        field:
+          type: string
+        name:
+          type: string
+
+    CreateRoadmapResponse:
+      type: object
+      properties:
+        _id: 
+          type: string
+
+    UpdateRoadmapRequestBody:
+      type: object
+      properties:
+        field:
+          type: string
+        name:
+          type: string
+
+    UpdateRoadmapResponse:
+      type: object
+      properties:
+        _id: 
+          type: string
+
+    AddNodeToRoadmapRequestBody:
+      type: object
+      required:
+        - nodeId
+        - link
+      properties:
+        nodeId:
+          type: string
+        link:
+          type: object
+          properties:
+            type:
+              type: string
+            source:
+              type: string
+            target:
+              type: string
+
+    AddNodeToRoadmapResponse:
+      type: object
+      properties:
+        _id: 
+          type: string
+    
+    NodeSchema:
+      type: object
+      properties:
+        _id:
+          type: string
+        title:
+          type: string
+        overview:
+          type: string
+        references:
+          type: array
+          items:
+            type: object
+            properties:
+              description:
+                type: string
+              url:
+                type: string
+        parent:
+          type: string
+        children:
+          type: array
+          items:
+            type: array
+        position:
+          type: object
+          properties:
+            x: 
+              type: number
+            y: 
+              type: number
+
+    CreateNodeRequestBody:
+      type: object
+      required:
+        - title
+        - overview
+        - parent
+        - position
+      properties:
+        title:
+          type: string
+        overview:
+          type: string
+        references:
+          type: array
+          items:
+            type: object
+            properties:
+              description:
+                type: string
+              url:
+                type: string
+        parent:
+          type: string
+        position:
+          type: object
+          properties:
+            x: 
+              type: number
+            y:
+              type: number
+
+    CreateNodeResponse:
+      type: object
+      properties:
+        _id: 
+          type: string
+
+    UpdateNodeRequestBody: 
+      type: object
+      properties:
+        title:
+          type: string
+        overview:
+          type: string
+        references:
+          type: array
+          items:
+            type: object
+            properties:
+              description:
+                type: string
+              url:
+                type: string
+        parent:
+          type: string
+        children:
+          type: array
+          items: 
+            type: string
+        position:
+          type: object
+          properties:
+            x: 
+              type: number
+            y:
+              type: number
+
+    UpdateNodeResponse:
+      type: object
+      properties:
+        _id: 
+          type: string
