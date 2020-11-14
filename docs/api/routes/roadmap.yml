@@ -163,6 +163,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/AddNodeToRoadmapResponse'
+
   /roadmaps/{roadmapId}/nodes/{nodeId}:
     delete:
       summary: Delete a node in roadmap by ID (OWNER)
