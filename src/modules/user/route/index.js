@@ -8,6 +8,7 @@ import {
   RegisterRoadmapRequestBody,
   UpdateRoadmapProgressRequestBody,
   ChangePasswordRequestBody,
+  UpdateContributorProfileRequestBody,
 } from '../schema'
 
 const router = Router()
@@ -21,6 +22,15 @@ router
     authorize(),
     validate(UpdateProfileRequestBody, 'body'),
     controller.updateProfile
+  )
+
+router
+  .route('/contributor-profile')
+  .get(authorize('contributor'), controller.getContributorProfile)
+  .post(
+    authorize('contributor'),
+    validate(UpdateContributorProfileRequestBody, 'body'),
+    controller.updateContributorProfile
   )
 
 router

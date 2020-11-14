@@ -11,6 +11,16 @@ const UserProfile = new Schema({
   lastName: String,
 })
 
+const ContributorProfile = new Schema({
+  education: String,
+  experiences: [
+    {
+      title: String,
+      description: String,
+    },
+  ],
+})
+
 const User = new Schema(
   {
     email: {
@@ -26,6 +36,10 @@ const User = new Schema(
 
     profile: {
       type: UserProfile,
+    },
+
+    contributorProfile: {
+      type: ContributorProfile,
     },
 
     role: {

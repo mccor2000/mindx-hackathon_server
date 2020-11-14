@@ -4,13 +4,23 @@ import { wrap } from '../../../utils'
 const getProfile = async (req, res) => {
   const profile = await service.getProfile(req.user)
 
-  res.status(200).json({
-    data: profile,
-  })
+  res.status(200).json({ data: profile })
 }
 
 const updateProfile = async (req, res) => {
   await service.updateProfile(req.user, req.body)
+
+  res.status(204).end()
+}
+
+const getContributorProfile = async (req, res) => {
+  const contributorProfile = await service.getContributorProfile(req.user)
+
+  res.status(200).json({ data: contributorProfile })
+}
+
+const updateContributorProfile = async (req, res) => {
+  await service.updateContributorProfile(req.user, req.body)
 
   res.status(204).end()
 }
@@ -56,6 +66,8 @@ const changePassword = async (req, res) => {
 export default {
   getProfile: wrap(getProfile),
   updateProfile: wrap(updateProfile),
+  getContributorProfile: wrap(getContributorProfile),
+  updateContributorProfile: wrap(updateContributorProfile),
 
   getAllRegisteredRoadmap: wrap(getAllRegisteredRoadmap),
   registerRoadmap: wrap(registerRoadmap),

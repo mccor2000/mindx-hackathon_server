@@ -5,6 +5,13 @@ export const UpdateProfileRequestBody = Joi.object({
   lastName: Joi.string().max(64).required(),
 })
 
+export const UpdateContributorProfileRequestBody = Joi.object({
+  education: Joi.string().required(),
+  experiences: Joi.array().items(
+    Joi.object({ title: Joi.string(), description: Joi.string() })
+  ),
+})
+
 export const RegisterRoadmapRequestBody = Joi.object({
   roadmapId: Joi.string().required(),
 })

@@ -15,6 +15,17 @@ const updateProfile = async (user, profile) => {
   await user.save()
 }
 
+const getContributorProfile = async (user) => {
+  return user.contributorProfile
+}
+
+const updateContributorProfile = async (user, profile) => {
+  if (!user) throw new AppError(ErrorType.UNAUTHORIZED, `Unauthorized`)
+
+  user.contributorProfile = profile
+  await user.save()
+}
+
 const getAllRegisteredRoadmap = async (user) => {
   return Promise.all(
     user.currentRoadmaps.map((roadmap) =>
@@ -104,6 +115,8 @@ const changePassword = async (user, { password, newPassword }) => {
 export default {
   getProfile,
   updateProfile,
+  getContributorProfile,
+  updateContributorProfile,
 
   getAllRegisteredRoadmap,
   registerRoadmap,
