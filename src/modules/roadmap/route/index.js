@@ -1,7 +1,14 @@
 import { Router } from 'express'
 
 import controller from '../controller'
-import { authenticate, authorize } from '../../../middlewares'
+import { authenticate, authorize, validate } from '../../../middlewares'
+
+import {
+  CreateRoadmapRequestBody,
+  UpdateRoadmapRequestBody,
+  AddNodeToRoadMapRequestBody,
+  UpdateNodeByIdRequestBody,
+} from '../schema'
 
 export const roadmapRouter = Router()
 export const nodeRouter = Router()
@@ -12,18 +19,30 @@ nodeRouter.use(authenticate('jwt'))
 roadmapRouter
   .route('/')
   .get(authorize(), controller.getManyRoadmaps)
-  .post(authorize('contributor'), controller.createRoadmap)
+  .post(
+    authorize('contributor'),
+    validate(CreateRoadmapRequestBody, 'body'),
+    controller.createRoadmap
+  )
 
 roadmapRouter
   .route('/:roadmapId')
   .get(authorize(), controller.getRoadmapById)
-  .put(authorize('contributor'), controller.updateRoadmapById)
+  .put(
+    authorize('contributor'),
+    validate(UpdateRoadmapRequestBody, 'body'),
+    controller.updateRoadmapById
+  )
   .delete(authorize('contributor'), controller.deleteRoadmapById)
 
 roadmapRouter
   .route('/:roadmapId/nodes')
   .get(authorize(), controller.getAllNodesFromRoadmap)
-  .post(authorize('contributor'), controller.addNodeToRoadMap)
+  .post(
+    authorize('contributor'),
+    validate(AddNodeToRoadMapRequestBody, 'body'),
+    controller.addNodeToRoadMap
+  )
 
 roadmapRouter
   .route('/:roadmapId/nodes/:nodeId')
@@ -34,4 +53,8 @@ nodeRouter.route('/').post(authorize('contributor'), controller.createNode)
 nodeRouter
   .route('/:nodeId')
   .get(authorize(), controller.getNodeById)
-  .put(authorize('contributor'), controller.updateNodeById)
+  .put(
+    authorize('contributor'),
+    validate(UpdateNodeByIdRequestBody, 'body'),
+    controller.updateNodeById
+  )
