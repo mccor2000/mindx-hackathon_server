@@ -12,26 +12,26 @@ nodeRouter.use(authenticate('jwt'))
 roadmapRouter
   .route('/')
   .get(authorize(), controller.getManyRoadmaps)
-  .post(authorize(), controller.createRoadmap)
+  .post(authorize('contributor'), controller.createRoadmap)
 
 roadmapRouter
   .route('/:roadmapId')
   .get(authorize(), controller.getRoadmapById)
-  .put(authorize(), controller.updateRoadmapById)
-  .delete(authorize(), controller.deleteRoadmapById)
+  .put(authorize('contributor'), controller.updateRoadmapById)
+  .delete(authorize('contributor'), controller.deleteRoadmapById)
 
 roadmapRouter
   .route('/:roadmapId/nodes')
   .get(authorize(), controller.getAllNodesFromRoadmap)
-  .post(authorize(), controller.addNodeToRoadMap)
+  .post(authorize('contributor'), controller.addNodeToRoadMap)
 
 roadmapRouter
   .route('/:roadmapId/nodes/:nodeId')
-  .delete(authorize(), controller.removeNodeFromRoadmap)
+  .delete(authorize('contributor'), controller.removeNodeFromRoadmap)
 
-nodeRouter.route('/').post(authorize(), controller.createNode)
+nodeRouter.route('/').post(authorize('contributor'), controller.createNode)
 
 nodeRouter
   .route('/:nodeId')
   .get(authorize(), controller.getNodeById)
-  .put(authorize(), controller.updateNodeById)
+  .put(authorize('contributor'), controller.updateNodeById)

@@ -8,7 +8,7 @@ const getManyRoadmaps = async (_, res) => {
 }
 
 const createRoadmap = async (req, res) => {
-  const newRoadmap = await service.createRoadmap(req.body)
+  const newRoadmap = await service.createRoadmap(req.user, req.body)
 
   res.status(201).json({ data: newRoadmap })
 }
@@ -21,6 +21,7 @@ const getRoadmapById = async (req, res) => {
 
 const updateRoadmapById = async (req, res) => {
   const updatedRoadmap = await service.updateRoadmapById(
+    req.user,
     req.params.roadmapId,
     req.body
   )
@@ -29,7 +30,7 @@ const updateRoadmapById = async (req, res) => {
 }
 
 const deleteRoadmapById = async (req, res) => {
-  await service.removeRoadmapById(req.params.roadmapId)
+  await service.removeRoadmapById(req.user, req.params.roadmapId)
 
   res.status(204).end()
 }
@@ -43,13 +44,13 @@ const getAllNodesFromRoadmap = async (req, res) => {
 }
 
 const addNodeToRoadMap = async (req, res) => {
-  await service.addNodeToRoadMap(req.params.roadmapId, req.body)
+  await service.addNodeToRoadMap(req.user, req.params.roadmapId, req.body)
 
   res.status(201).end()
 }
 
 const createNode = async (req, res) => {
-  const newNode = await service.createNode(req.body)
+  const newNode = await service.createNode(req.user, req.body)
 
   res.status(201).json({ data: newNode })
 }
@@ -61,13 +62,21 @@ const getNodeById = async (req, res) => {
 }
 
 const updateNodeById = async (req, res) => {
-  const updatedNode = await service.updateNodeById(req.params.nodeId, req.body)
+  const updatedNode = await service.updateNodeById(
+    req.user,
+    req.params.nodeId,
+    req.body
+  )
 
   res.status(200).json({ data: updatedNode })
 }
 
 const removeNodeFromRoadmap = async (req, res) => {
-  await service.removeNodeFromRoadmap(req.params.roadmapId, req.params.nodeId)
+  await service.removeNodeFromRoadmap(
+    req.user,
+    req.params.roadmapId,
+    req.params.nodeId
+  )
 
   res.status(204).end()
 }
