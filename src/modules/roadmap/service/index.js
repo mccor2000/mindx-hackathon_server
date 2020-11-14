@@ -53,7 +53,7 @@ const updateRoadmapById = async (user, roadmapId, updateData) => {
     throw new AppError(ErrorType.BAD_REQUEST, `Roadmap does not exist`)
 
   if (user._id !== existingRoadmap.owner)
-    throw AppError(ErrorType.FORBIDDEN, 'Permision denied')
+    throw new AppError(ErrorType.FORBIDDEN, 'Permision denied')
 
   return Roadmap.findByIdAndUpdate(roadmapId, updateData)
     .select('_id')
