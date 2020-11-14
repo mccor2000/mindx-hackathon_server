@@ -18,6 +18,32 @@ components:
           type: string
         lastName:
           type: string
+
+    RegisteredRoadmapSchema:
+      type: object
+      properties:
+        roadmapId:
+          type: string
+        finished:
+          type: array
+          items:
+            type: string
+
+    RegisterRoadmapRequestBody:
+      type: object
+      required:
+        - roadmapId
+      properties:
+        roadmapId:
+          type: string
+
+    UpdateRoadmapProgressRequestBody:
+      type: object
+      required:
+        - finishedNodeId
+      properties:
+        finishedNodeId:
+          type: string
     
     ChangePasswordRequestBody:
       type: object

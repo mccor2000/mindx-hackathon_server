@@ -15,7 +15,6 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/UserProfileSchema'
-
     put:
       summary: Update profile 
       tags: [User]
@@ -28,6 +27,102 @@ paths:
             schema:
               $ref: '#/components/schemas/ProfileRequestBody'
       responses:
+        '204':
+          description: No-Content
+
+  /user/registered-roadmaps:
+    get:
+      summary: Return user's currentRoadmaps
+      tags: [User]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/RegisteredRoadmapSchema'
+
+    post:
+      summary: Register a roadmap
+      tags: [User]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRoadmapRequestBody'
+      responses:
+        '201':
+          description: No-Content
+
+  /user/registered-roadmaps/{roadmapId}:
+    get:
+      summary: Return user's roadmap progress
+      tags: [User]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: roadmapId
+          schema:
+            type: string
+          required: true
+          description: ID of the roadmap that contains nodes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/RegisteredRoadmapSchema'
+    put:
+      summary: Mark a node as finished 
+      tags: [User]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: roadmapId
+          schema:
+            type: string
+          required: true
+          description: ID of the roadmap that contains nodes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoadmapProgressRequestBody'
+      responses:
+        '204':
+          description: No-Content
+    delete:
+      summary: Unregister a roadmap
+      tags: [User]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: roadmapId
+          schema:
+            type: string
+          required: true
+          description: ID of the roadmap that contains nodes
+      response:
         '204':
           description: No-Content
   
