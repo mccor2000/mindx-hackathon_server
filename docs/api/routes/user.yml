@@ -29,6 +29,38 @@ paths:
       responses:
         '204':
           description: No-Content
+
+  /user/profile/{userId}:
+    get: 
+      summary: Return user profile based on id
+      tags: [User]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: ID of user 
+      responses:
+        '200': 
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      profile: 
+                        type: object
+                        $ref: '#/components/schemas/UserProfileSchema'
+                      contributorProfile:
+                        type: object
+                        $ref: '#/components/schemas/ContributorProfileSchema'
+
   /user/contributor-profile:
     get:
       summary: Return contributor's profile 
