@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-This project requires NodeJS (version 10 or later) and NPM.
+This project requires NodeJS (version 8 or later) and NPM.
 [Node](http://nodejs.org/) and [NPM](https://npmjs.org/) are really easy to install.
 To make sure you have them available on your machine,
 try running the following command.
@@ -23,10 +23,8 @@ v15.0.1
   - [Getting Started](#getting-started)
   - [Installation](#installation)
   - [Usage](#usage)
-    - [Serving the app](#serving-the-app)
-    - [Running the tests](#running-the-tests)
     - [Building a distribution version](#building-a-distribution-version)
-    - [Serving the distribution version](#serving-the-distribution-version)
+    - [Serving the app](#serving-the-app)
   - [API](#api)
   - [Built With](#built-with)
   - [Authors](#authors)
@@ -55,40 +53,20 @@ $ npm install
 
 ## Usage
 
-### Serving the app
-
-```sh
-$ npm start
-```
-
-### Running the tests
-
-```sh
-$ npm test
-```
-
 ### Building a distribution version
 
 ```sh
 $ npm run build
 ```
 
-This task will create a distribution version of the project
-inside your local `dist/` folder
-
-### Serving the distribution version
+### Serving the app
 
 ```sh
-$ npm run serve:dist
+$ npm start
 ```
 
-This will use `lite-server` for servign your already
-generated distribution version of the project.
-
-*Note* this requires
-[Building a distribution version](#building-a-distribution-version) first.
-
 ## API
+[API docs](https://mindx-hackathon.herokuapp.com/api/docs/)
 
 ## Built With
 
@@ -99,8 +77,6 @@ generated distribution version of the project.
 
 ## Authors
 
-* **Tran Minh Thang** - *Initial work* - [mccor2000](https://github.com/mccor2000)
-
-See also the list of [contributors](https://github.com/mccor2000/mindx-hackathon_server/contributors) who participated in this project.
+* **Tran Minh Thang** - [mccor2000](https://github.com/mccor2000)
 
 ## License
