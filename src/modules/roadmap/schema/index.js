@@ -1,13 +1,15 @@
 import Joi from '@hapi/joi'
 
 export const CreateRoadmapRequestBody = Joi.object({
-  field: Joi.string().max(64).required(),
-  name: Joi.string().max(64).required(),
+  field: Joi.string().required(),
+  name: Joi.string().required(),
+  overview: Joi.string().required(),
 })
 
 export const UpdateRoadmapRequestBody = Joi.object({
   field: Joi.string(),
   name: Joi.string(),
+  overview: Joi.string(),
 })
 
 export const AddNodeToRoadMapRequestBody = Joi.object({
