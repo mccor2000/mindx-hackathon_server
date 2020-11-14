@@ -6,6 +6,7 @@ import swaggerUi from 'swagger-ui-express'
 import authRouter from './modules/auth/route'
 import userRouter from './modules/user/route'
 import { roadmapRouter, nodeRouter } from './modules/roadmap/route'
+import roomRouter from './modules/room/route'
 
 import config from './app.config'
 
@@ -18,5 +19,6 @@ router.use('/auth', authRouter)
 router.use('/user', userRouter)
 router.use('/roadmaps', roadmapRouter)
 router.use('/nodes', nodeRouter)
+router.use('/rooms', roomRouter)
 
 export default router
