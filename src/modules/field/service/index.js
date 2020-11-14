@@ -9,7 +9,7 @@ const getManyFields = async (filter = {}) => {
 }
 
 const createField = async (fieldData) => {
-  const existingField = await Roadmap.findOne({ name: fieldData.name })
+  const existingField = await Roadmap.findOne({ title: fieldData.title })
     .lean()
     .exec()
 
