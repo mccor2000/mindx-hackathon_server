@@ -11,6 +11,57 @@ const updateProfile = async (user, profile) => {
   await user.save()
 }
 
+const getAllRegisteredRoadmap = async (user) => {
+  return user.currentRoadmaps
+}
+
+const registerRoadmap = async (user, { roadmapId }) => {
+  const idx = user.currentRoadmaps.findIndex(
+    (ele) => ele.roadmapId == roadmapId
+  )
+
+  if (idx >= 0)
+    throw new AppError(
+      ErrorType.BAD_REQUEST,
+      `You have already registered this roadmap`
+    )
+  user.currentRoadmaps.push({ roadmapId })
+
+  await user.save()
+  return { _id: roadmapId }
+}
+
+const getRoadmapProgress = async (user, roadmapId) => {
+  const idx = user.currentRoadmaps.findIndex(
+    (ele) => ele.roadmapId == roadmapId
+  )
+  if (idx < 0)
+    throw new AppError(ErrorType.BAD_REQUEST, `Roadmap does not exist`)
+
+  const roadmapProgress = user.currentRoadmaps[idx]
+
+  return roadmapProgress
+}
+
+const updateRoadmapProgress = async (user, roadmapId, { finishedNodeId }) => {
+  const idx = user.currentRoadmaps.findIndex(
+    (ele) => ele.roadmapId == roadmapId
+  )
+  if (idx < 0)
+    throw new AppError(ErrorType.BAD_REQUEST, `Roadmap does not exist`)
+
+  user.currentRoadmaps[idx].finished.push(finishedNodeId)
+  await user.save()
+}
+
+const unregisterRoadmap = async (user, roadmapId) => {
+  user.currentRoadmaps = user.currentRoadmaps.filter(
+    (ele) => ele.roadmapId != roadmapId
+  )
+
+  await user.save()
+}
+
 const changePassword = async (user, { password, newPassword }) => {
   if (password === newPassword)
     throw new AppError(
@@ -29,5 +80,12 @@ const changePassword = async (user, { password, newPassword }) => {
 export default {
   getProfile,
   updateProfile,
+
+  getAllRegisteredRoadmap,
+  registerRoadmap,
+  getRoadmapProgress,
+  updateRoadmapProgress,
+  unregisterRoadmap,
+
   changePassword,
 }
