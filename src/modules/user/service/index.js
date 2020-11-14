@@ -1,3 +1,6 @@
+import { Roadmap } from '../../roadmap/model'
+
+import roadmapService from '../../roadmap/service'
 import { AppError, ErrorType } from '../../../utils/errors'
 
 const getProfile = async (user) => {
@@ -12,7 +15,11 @@ const updateProfile = async (user, profile) => {
 }
 
 const getAllRegisteredRoadmap = async (user) => {
-  return user.currentRoadmaps
+  return Promise.all(
+    user.currentRoadmaps.map((roadmap) =>
+      Roadmap.findById(roadmap.roadmapId).select('_id name field').lean().exec()
+    )
+  )
 }
 
 const registerRoadmap = async (user, { roadmapId }) => {
@@ -39,8 +46,9 @@ const getRoadmapProgress = async (user, roadmapId) => {
     throw new AppError(ErrorType.BAD_REQUEST, `Roadmap does not exist`)
 
   const roadmapProgress = user.currentRoadmaps[idx]
+  const roadmap = await roadmapService.getRoadmapById(roadmapProgress.roadmapId)
 
-  return roadmapProgress
+  return { roadmap, finished: roadmapProgress.finished }
 }
 
 const updateRoadmapProgress = async (user, roadmapId, { finishedNodeId }) => {
