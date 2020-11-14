@@ -7,6 +7,21 @@ components:
           type: string
         lastName:
           type: string
+
+    ContributorProfileSchema:
+      type: object
+      properties:
+        education: 
+          type: string
+        experiences:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              description:
+                type: string
     
     ProfileRequestBody:
       type: object
@@ -18,6 +33,21 @@ components:
           type: string
         lastName:
           type: string
+
+    UpdateContributorProfileRequestBody:
+      type: object
+      properties:
+        education: 
+          type: string
+        experiences:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              description:
+                type: string
 
     RegisteredRoadmapSchema:
       type: object
