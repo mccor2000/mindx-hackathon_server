@@ -67,14 +67,19 @@ const removeRoadmapById = async (roadmapId) => {
   return removedRoadmap
 }
 
-const addNodeToRoadMap = async (roadmapId, { nodeId, link }) => {
+const addNodeToRoadMap = async (roadmapId, { nodeId, parentId }) => {
   const roadmap = await getRoadmapById(roadmapId)
   if (!roadmap.content.every((id) => id != nodeId))
     throw new AppError(ErrorType.BAD_REQUEST, `Node already exists in roadmap`)
 
   await Roadmap.findByIdAndUpdate(roadmapId, {
-    $push: { content: nodeId, links: link },
+    $push: {
+      content: nodeId,
+      links: { id: `e${parentId}-${nodeId}`, source: parentId, target: nodeId },
+    },
   })
+
+  await Node.findByIdAndUpdate(nodeId, { parent: parentId })
 }
 
 const removeNodeFromRoadmap = async (roadmapId, nodeId) => {

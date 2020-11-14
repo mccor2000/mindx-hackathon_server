@@ -36,16 +36,17 @@ const NodeSchema = new Schema({
   },
 })
 
-NodeSchema.pre('init', async function (next) {
+NodeSchema.pre('save', async function (next) {
   try {
     if (!this.parent || !this.isModified('parent')) return next()
 
-    await Node.findOneAndUpdate(this.parent, { $push: { children: this._id } })
+    await Node.findByIdAndUpdate(this.parent, { $push: { children: this._id } })
       .lean()
       .exec()
 
     next()
   } catch (err) {
+    console.log(err)
     next(err)
   }
 })
@@ -99,9 +100,9 @@ const RoadmapSchema = new Schema(
 
     links: [
       {
+        id: String,
         source: String,
         target: String,
-        type: String,
       },
     ],
 

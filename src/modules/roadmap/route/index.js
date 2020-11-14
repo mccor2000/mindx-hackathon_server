@@ -26,7 +26,7 @@ roadmapRouter
   .post(authorize(), controller.addNodeToRoadMap)
 
 roadmapRouter
-  .route('/:roadmapRouter/nodes/:nodeId')
+  .route('/:roadmapId/nodes/:nodeId')
   .delete(authorize(), controller.removeNodeFromRoadmap)
 
 nodeRouter.route('/').post(authorize(), controller.createNode)

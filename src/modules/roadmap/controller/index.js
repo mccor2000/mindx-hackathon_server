@@ -35,9 +35,9 @@ const deleteRoadmapById = async (req, res) => {
 }
 
 const getAllNodesFromRoadmap = async (req, res) => {
-  const nodesBelongToRoadmap = await service.getManyNodes({
-    roadmapId: req.params.roadmapId,
-  })
+  const nodesBelongToRoadmap = await service.getAllNodesInRoadmapById(
+    req.params.roadmapId
+  )
 
   res.status(200).json({ data: nodesBelongToRoadmap })
 }
