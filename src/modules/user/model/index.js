@@ -47,6 +47,11 @@ const User = new Schema(
             ref: 'nodes',
           },
         ],
+
+        roomId: {
+          type: Schema.Types.ObjectId,
+          ref: 'rooms',
+        },
       },
     ],
 

@@ -1,0 +1,39 @@
+components: 
+  schemas:
+    RoomSchema: 
+      type: object
+      properties:
+        _id:
+          type: string
+        roadmapId: 
+          type: string
+        users: 
+          type: array
+          items:
+            type: string
+
+    CreateRoomRequestBody:
+      type: object
+      properties:
+        roadmapId:
+          type: string
+      required:
+        - roadmapId
+
+    CreateRoomResponse:
+      type: object
+      properties:
+        _id: 
+          type: string
+
+    UpdateRoomRequestBody:
+      type: object
+      properties:
+        userId:
+          type: string
+
+    UpdateRoomResponse:
+      type: object
+      properties:
+        _id:
+          type: string
