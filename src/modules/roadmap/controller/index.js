@@ -1,8 +1,8 @@
 import service from '../service'
 import { wrap } from '../../../utils'
 
-const getManyRoadmaps = async (_, res) => {
-  const roadmaps = await service.getManyRoadmaps()
+const getManyRoadmaps = async (req, res) => {
+  const roadmaps = await service.getManyRoadmaps(req.query)
 
   res.status(200).json({ data: roadmaps })
 }
