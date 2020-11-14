@@ -7,10 +7,10 @@ const getManyRoadmaps = async (filter = {}) => {
   return roadmaps
 }
 
-const createRoadmap = async (roadmapData = {}, userId) => {
+const createRoadmap = async (user, roadmapData = {}) => {
   const existingRoadmap = await Roadmap.findOne({
     name: roadmapData.name,
-    owner: userId,
+    owner: user._id,
   })
     .select('_id name')
     .lean()
@@ -22,7 +22,7 @@ const createRoadmap = async (roadmapData = {}, userId) => {
       `Roadmap ${existingRoadmap.name} is already exist in your repository`
     )
 
-  const newRoadmap = await Roadmap.create(roadmapData)
+  const newRoadmap = await Roadmap.create({ ...roadmapData, owner: user._id })
   return { _id: newRoadmap.id }
 }
 
@@ -43,32 +43,45 @@ const getAllNodesInRoadmapById = async (roadmapId) => {
   return { nodes, links }
 }
 
-const updateRoadmapById = async (roadmapId, updateData) => {
-  const existingRoadmap = await Roadmap.findByIdAndUpdate(roadmapId, updateData)
-    .select('_id')
+const updateRoadmapById = async (user, roadmapId, updateData) => {
+  const existingRoadmap = await Roadmap.findById(roadmapId)
+    .select('owner')
     .lean()
     .exec()
 
   if (!existingRoadmap)
     throw new AppError(ErrorType.BAD_REQUEST, `Roadmap does not exist`)
 
-  return existingRoadmap
-}
+  if (user._id !== existingRoadmap.owner)
+    throw AppError(ErrorType.FORBIDDEN, 'Permision denied')
 
-const removeRoadmapById = async (roadmapId) => {
-  const removedRoadmap = await Roadmap.findOneAndRemove(roadmapId)
+  return Roadmap.findByIdAndUpdate(roadmapId, updateData)
     .select('_id')
     .lean()
     .exec()
-
-  if (!removedRoadmap)
-    throw new AppError(ErrorType.BAD_REQUEST, `Roadmap does not exist`)
-
-  return removedRoadmap
 }
 
-const addNodeToRoadMap = async (roadmapId, { nodeId, parentId }) => {
+const removeRoadmapById = async (user, roadmapId) => {
+  const existingRoadmap = await Roadmap.findOneAndRemove(roadmapId)
+    .select('owner')
+    .lean()
+    .exec()
+
+  if (!existingRoadmap)
+    throw new AppError(ErrorType.BAD_REQUEST, `Roadmap does not exist`)
+
+  if (user._id !== existingRoadmap.owner)
+    throw AppError(ErrorType.FORBIDDEN, 'Permision denied')
+
+  return Roadmap.findByIdAndDelete(roadmapId).select('_id').lean().exec()
+}
+
+const addNodeToRoadMap = async (user, roadmapId, { nodeId, parentId }) => {
   const roadmap = await getRoadmapById(roadmapId)
+
+  if (user._id !== roadmap.owner)
+    throw AppError(ErrorType.FORBIDDEN, 'Permision denied')
+
   if (!roadmap.content.every((id) => id != nodeId))
     throw new AppError(ErrorType.BAD_REQUEST, `Node already exists in roadmap`)
 
@@ -82,8 +95,12 @@ const addNodeToRoadMap = async (roadmapId, { nodeId, parentId }) => {
   await Node.findByIdAndUpdate(nodeId, { parent: parentId })
 }
 
-const removeNodeFromRoadmap = async (roadmapId, nodeId) => {
+const removeNodeFromRoadmap = async (user, roadmapId, nodeId) => {
   const roadmap = await getRoadmapById(roadmapId)
+
+  if (user._id !== roadmap.owner)
+    throw AppError(ErrorType.FORBIDDEN, 'Permision denied')
+
   if (roadmap.content.every((id) => id != nodeId))
     throw new AppError(ErrorType.BAD_REQUEST, `Node does not exist in roadmap`)
 
@@ -101,8 +118,8 @@ const getManyNodes = async (filter = {}) => {
   return nodes
 }
 
-const createNode = async (nodeData) => {
-  const newNode = await Node.create(nodeData)
+const createNode = async (user, nodeData) => {
+  const newNode = await Node.create({ ...nodeData, owner: user._id })
 
   return newNode
 }
@@ -113,28 +130,28 @@ const getNodeById = async (nodeId) => {
   return existingNode
 }
 
-const updateNodeById = async (nodeId, updateData) => {
-  const updatedNode = await Node.findByIdAndUpdate(nodeId, updateData)
-    .select('_id')
-    .lean()
-    .exec()
+const updateNodeById = async (user, nodeId, updateData) => {
+  const existingNode = await Node.findById(nodeId).select('owner').lean().exec()
 
-  if (!updatedNode)
+  if (!existingNode)
     throw new AppError(ErrorType.BAD_REQUEST, `Node does not exist`)
 
-  return updatedNode
+  if (user._id !== existingNode.owner)
+    throw AppError(ErrorType.FORBIDDEN, 'Permision denied')
+
+  return Node.findByIdAndUpdate(nodeId, updateData).select('_id').lean().exec()
 }
 
-const deleteNodeById = async (nodeId) => {
-  const removedNode = await Node.findByIdAndDelete(nodeId)
-    .select('_id')
-    .lean()
-    .exec()
+const deleteNodeById = async (user, nodeId) => {
+  const existingNode = await Node.findById(nodeId).select('owner').lean().exec()
 
-  if (!removedNode)
+  if (!existingNode)
     throw new AppError(ErrorType.BAD_REQUEST, `Node does not exist`)
 
-  return removedNode
+  if (user._id !== existingNode.owner)
+    throw AppError(ErrorType.FORBIDDEN, 'Permision denied')
+
+  return Node.findByIdAndDelete(nodeId).select('_id').lean().exec()
 }
 
 export default {
