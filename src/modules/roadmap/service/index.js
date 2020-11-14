@@ -89,7 +89,7 @@ const removeNodeFromRoadmap = async (roadmapId, nodeId) => {
 
   const removedNode = await deleteNodeById(nodeId)
   await Roadmap.findByIdAndUpdate(roadmapId, {
-    $pull: { content: removedNode._id },
+    $pull: { content: removedNode._id, links: { id: { $regex: `${nodeId}` } } },
   })
 
   return removedNode
