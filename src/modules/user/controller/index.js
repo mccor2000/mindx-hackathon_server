@@ -7,6 +7,12 @@ const getProfile = async (req, res) => {
   res.status(200).json({ data: profile })
 }
 
+const getProfileById = async (req, res) => {
+  const profile = await service.getProfileById(req.params.userId)
+
+  res.status(200).json({ data: profile })
+}
+
 const updateProfile = async (req, res) => {
   await service.updateProfile(req.user, req.body)
 
@@ -65,6 +71,7 @@ const changePassword = async (req, res) => {
 }
 export default {
   getProfile: wrap(getProfile),
+  getProfileById: wrap(getProfileById),
   updateProfile: wrap(updateProfile),
   getContributorProfile: wrap(getContributorProfile),
   updateContributorProfile: wrap(updateContributorProfile),

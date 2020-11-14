@@ -1,11 +1,23 @@
 import { Roadmap } from '../../roadmap/model'
 import Room from '../../room/model'
+import User from '../model'
 
 import roadmapService from '../../roadmap/service'
 import { AppError, ErrorType } from '../../../utils/errors'
 
 const getProfile = async (user) => {
   return user.profile
+}
+
+const getProfileById = async (id) => {
+  const user = await User.findById(id)
+    .select('profile contributorProfile')
+    .lean()
+    .exec()
+
+  if (!user) throw new AppError(ErrorType.BAD_REQUEST, 'User not found')
+
+  return user
 }
 
 const updateProfile = async (user, profile) => {
@@ -114,6 +126,7 @@ const changePassword = async (user, { password, newPassword }) => {
 
 export default {
   getProfile,
+  getProfileById,
   updateProfile,
   getContributorProfile,
   updateContributorProfile,

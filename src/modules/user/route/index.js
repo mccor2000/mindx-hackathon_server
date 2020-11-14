@@ -24,6 +24,8 @@ router
     controller.updateProfile
   )
 
+router.route('/profile/:userId').get(authorize(), controller.getProfileById)
+
 router
   .route('/contributor-profile')
   .get(authorize('contributor'), controller.getContributorProfile)
