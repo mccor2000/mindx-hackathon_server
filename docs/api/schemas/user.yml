@@ -24,7 +24,7 @@ components:
       properties:
         roadmap:
           type: object
-          $ref: '#/components/schemas/Roadmap'
+          $ref: '#/components/schemas/RoadmapSchema'
         finished: 
           type: array
           items:
