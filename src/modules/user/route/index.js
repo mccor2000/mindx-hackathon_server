@@ -1,9 +1,7 @@
 import { Router } from 'express'
 
 import controller from '../controller'
-import { UpdateProfileRequestBody, ChangePasswordRequestBody } from '../schema'
-import { authorize, authenticate, validate } from '../../../middlewares'
-import { Roles } from '../../user/model'
+import { authorize, authenticate } from '../../../middlewares'
 
 const router = Router()
 
@@ -11,19 +9,20 @@ router.use(authenticate('jwt'))
 
 router
   .route('/profile')
-  .get(authorize([...Object.values(Roles)]), controller.getProfile)
-  .put(
-    authorize([...Object.values(Roles)]),
-    validate(UpdateProfileRequestBody, 'body'),
-    controller.updateProfile
-  )
+  .get(authorize(), controller.getProfile)
+  .put(authorize(), controller.updateProfile)
 
 router
-  .route('/change-password')
-  .post(
-    authorize([...Object.values(Roles)]),
-    validate(ChangePasswordRequestBody, 'body'),
-    controller.changePassword
-  )
+  .route('/registered-roadmaps')
+  .get(authorize(), controller.getAllRegisteredRoadmap)
+  .post(authorize(), controller.registerRoadmap)
+
+router
+  .route('/registered-roadmaps/:roadmapId')
+  .get(authorize(), controller.getRoadmapProgress)
+  .put(authorize(), controller.updateRoadmapProgress)
+  .delete(authorize(), controller.unregisterRoadmap)
+
+router.route('/change-password').post(authorize(), controller.changePassword)
 
 export default router

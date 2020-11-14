@@ -34,6 +34,22 @@ const User = new Schema(
       default: Roles.Learner,
     },
 
+    currentRoadmaps: [
+      {
+        roadmapId: {
+          type: Schema.Types.ObjectId,
+          ref: 'roadmaps',
+        },
+
+        finished: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'nodes',
+          },
+        ],
+      },
+    ],
+
     status: {
       type: Boolean,
       default: true,
