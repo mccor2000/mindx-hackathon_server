@@ -1,0 +1,110 @@
+paths:
+  /fields:
+    get:
+      summary: Return many fields based on filter
+      tags: [Field]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FieldSchema'
+
+    post:
+      summary: Create a field 
+      tags: [Field]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFieldRequestBody'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CreateFieldResponse'
+
+  /fields/{fieldId}:
+    get:
+      summary: Return a field info by ID
+      tags: [Field]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: fieldId
+          schema:
+            type: string
+          required: true
+          description: ID of the field
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FieldSchema'
+
+    put:
+      summary: Update field 
+      tags: [Field]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: fieldId
+          schema:
+            type: string
+          required: true
+          description: ID of the field
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFieldRequestBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UpdateFieldResponse'
+
+    delete:
+      summary: Delete a field by ID
+      tags: [Field]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: fieldId
+          schema:
+            type: string
+          required: true
+          description: ID of the field
+      responses:
+        '204':
+          description: No-Content

@@ -1,0 +1,53 @@
+components: 
+  schemas:
+    FieldSchema: 
+      type: object
+      properties:
+        _id:
+          type: string
+        title: 
+          type: string
+        majors: 
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              picture:
+                type: string
+
+    CreateFieldRequestBody:
+      type: object
+      properties:
+        title:
+          type: string
+      required:
+        - title
+
+    CreateFieldResponse:
+      type: object
+      properties:
+        _id: 
+          type: string
+
+    UpdateFieldRequestBody:
+      type: object
+      properties:
+        title:
+          type: string
+        majors: 
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              picture:
+                type: string
+
+    UpdateFieldResponse:
+      type: object
+      properties:
+        _id:
+          type: string

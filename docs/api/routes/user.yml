@@ -29,7 +29,7 @@ paths:
       responses:
         '204':
           description: No-Content
-  /contributor-profile:
+  /user/contributor-profile:
     get:
       summary: Return contributor's profile 
       tags: [User]
