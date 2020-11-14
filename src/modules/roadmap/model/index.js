@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose'
+import Room from '../../room/model'
 
 const NodeSchema = new Schema({
   title: {
@@ -82,6 +83,11 @@ const RoadmapSchema = new Schema(
       required: true,
     },
 
+    overview: {
+      type: String,
+      required: true,
+    },
+
     rating: [
       {
         userId: {
@@ -116,6 +122,11 @@ const RoadmapSchema = new Schema(
       ref: 'users',
     },
 
+    currentRoom: {
+      roomId: { type: Schema.Types.ObjectId, ref: 'rooms' },
+      totalLearners: { type: Number, default: 0 },
+    },
+
     contributors: [
       {
         type: Schema.Types.ObjectId,
@@ -147,6 +158,23 @@ const RoadmapSchema = new Schema(
   },
   { timestamps: true }
 )
+
+RoadmapSchema.pre('save', async function (next) {
+  try {
+    if (
+      this.currentRoom.totalLearners === 0 ||
+      this.currentRoom.totalLearners === 5
+    ) {
+      const newRoom = await Room.create({ roadmapId: this._id })
+
+      this.currentRoom = { roomId: newRoom._id, totalLearners: 0 }
+    }
+
+    return next()
+  } catch (err) {
+    next(err)
+  }
+})
 
 export const Node = model('Node', NodeSchema, 'nodes')
 export const Roadmap = model('Roadmap', RoadmapSchema, 'roadmaps')

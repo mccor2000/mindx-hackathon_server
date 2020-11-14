@@ -1,4 +1,5 @@
 import { Roadmap } from '../../roadmap/model'
+import Room from '../../room/model'
 
 import roadmapService from '../../roadmap/service'
 import { AppError, ErrorType } from '../../../utils/errors'
@@ -32,10 +33,25 @@ const registerRoadmap = async (user, { roadmapId }) => {
       ErrorType.BAD_REQUEST,
       `You have already registered this roadmap`
     )
-  user.currentRoadmaps.push({ roadmapId })
+  const currentRoadmap = await Roadmap.findByIdAndUpdate(roadmapId, {
+    $inc: { 'currentRoom.totalLearners': 1 },
+  })
+    .select('currentRoom')
+    .lean()
+    .exec()
 
+  await Room.findByIdAndUpdate(currentRoadmap.currentRoom.roomId, {
+    $push: { users: user._id },
+  })
+    .lean()
+    .exec()
+
+  user.currentRoadmaps.push({
+    roadmapId,
+    roomId: currentRoadmap.currentRoom.roomId,
+  })
   await user.save()
-  return { _id: roadmapId }
+  return { roadmapId, roomId: currentRoadmap.currentRoom.roomId }
 }
 
 const getRoadmapProgress = async (user, roadmapId) => {
