@@ -22,9 +22,10 @@ components:
     RegisteredRoadmapSchema:
       type: object
       properties:
-        roadmapId:
-          type: string
-        finished:
+        roadmap:
+          type: object
+          $ref: '#/components/schemas/Roadmap'
+        finished: 
           type: array
           items:
             type: string

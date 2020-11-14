@@ -48,7 +48,13 @@ paths:
                     type: array
                     items:
                       type: object
-                      $ref: '#/components/schemas/RegisteredRoadmapSchema'
+                      properties:
+                        _id: 
+                          type: string
+                        field:
+                          type: string
+                        name:
+                          type: string
 
     post:
       summary: Register a roadmap
