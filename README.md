@@ -28,8 +28,6 @@ v15.0.1
     - [Building a distribution version](#building-a-distribution-version)
     - [Serving the distribution version](#serving-the-distribution-version)
   - [API](#api)
-
-  - [Contributing](#contributing)
   - [Built With](#built-with)
   - [Authors](#authors)
   - [License](#license)
@@ -91,19 +89,6 @@ generated distribution version of the project.
 [Building a distribution version](#building-a-distribution-version) first.
 
 ## API
-
-
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-1.  Fork it!
-2.  Create your feature branch: `git checkout -b my-new-feature`
-3.  Add your changes: `git add .`
-4.  Commit your changes: `git commit -am 'Add some feature'`
-5.  Push to the branch: `git push origin my-new-feature`
-6.  Submit a pull request :sunglasses:
-
 
 ## Built With
 
