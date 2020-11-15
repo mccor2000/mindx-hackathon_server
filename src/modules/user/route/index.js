@@ -15,6 +15,8 @@ const router = Router()
 
 router.use(authenticate('jwt'))
 
+router.route('/:userId').get(authorize(), controller.getProfileById)
+
 router
   .route('/profile')
   .get(authorize(), controller.getProfile)
@@ -23,8 +25,6 @@ router
     validate(UpdateProfileRequestBody, 'body'),
     controller.updateProfile
   )
-
-router.route('/profile/:userId').get(authorize(), controller.getProfileById)
 
 router
   .route('/contributor-profile')
