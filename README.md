@@ -70,10 +70,11 @@ $ npm start
 
 ## Built With
 
-* Dropwizard - Bla bla bla
-* Maven - Maybe
-* Atom - ergaerga
-* Love
+* ExpressJS - For building web server and APIs
+* Mongoose - ORM for MongoDB
+* PassportJS - For managing user authentication
+* Joi - For request body validation
+* Morgan - For logging
 
 ## Authors
 
