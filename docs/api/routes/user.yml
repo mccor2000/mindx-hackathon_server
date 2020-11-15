@@ -30,7 +30,7 @@ paths:
         '204':
           description: No-Content
 
-  /user/{userId}:
+  /user/profile/{userId}:
     get: 
       summary: Return user profile based on id
       tags: [User]
