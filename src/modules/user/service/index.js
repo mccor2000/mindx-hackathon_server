@@ -41,7 +41,10 @@ const updateContributorProfile = async (user, profile) => {
 const getAllRegisteredRoadmap = async (user) => {
   return Promise.all(
     user.currentRoadmaps.map((roadmap) =>
-      Roadmap.findById(roadmap.roadmapId).select('_id name field').lean().exec()
+      Roadmap.findById(roadmap.roadmapId)
+        .select('_id name field currentRoom')
+        .lean()
+        .exec()
     )
   )
 }

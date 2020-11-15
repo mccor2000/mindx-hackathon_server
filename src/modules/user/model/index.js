@@ -9,6 +9,7 @@ export const Roles = Object.freeze({
 const UserProfile = new Schema({
   firstName: String,
   lastName: String,
+  picture: String,
 })
 
 const ContributorProfile = new Schema({

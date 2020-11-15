@@ -3,6 +3,7 @@ import Joi from '@hapi/joi'
 export const UpdateProfileRequestBody = Joi.object({
   firstName: Joi.string().max(64).required(),
   lastName: Joi.string().max(64).required(),
+  picture: Joi.string().uri(),
 })
 
 export const UpdateContributorProfileRequestBody = Joi.object({
